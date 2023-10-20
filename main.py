@@ -8,7 +8,6 @@ from environs import Env
 
 
 def get_response(dvmn_token, timestamp):
-    timeout = 2
     params = {
         'timestamp': timestamp,
     }
@@ -16,7 +15,7 @@ def get_response(dvmn_token, timestamp):
         'Authorization': f'Token {dvmn_token}',
     }
     url = 'https://dvmn.org/api/long_polling/'
-    response = requests.get(url, headers=headers, params=params, timeout=timeout)
+    response = requests.get(url, headers=headers, params=params)
     response.raise_for_status()
     return response.json()
 
