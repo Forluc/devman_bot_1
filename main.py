@@ -20,27 +20,27 @@ def get_response(dvmn_token, timestamp):
     return response.json()
 
 
-def sending_messages(dvmn_token, tg_token, chat_id):
+def sending_messages_in_telegram(dvmn_token, tg_token, chat_id):
     bot = telegram.Bot(token=tg_token)
     timestamp = datetime.datetime.now().timestamp()
     while True:
         try:
-            response = get_response(dvmn_token, timestamp)
-            if response['status'] == 'timeout':
+            response_json = get_response(dvmn_token, timestamp)
+            if response_json['status'] == 'timeout':
                 continue
             else:
-                if response['new_attempts'][0]['is_negative']:
+                if response_json['new_attempts'][0]['is_negative']:
                     bot.sendMessage(chat_id=chat_id,
-                                    text=f'''У вас проверили работу [{response['new_attempts'][0]['lesson_title']}]({response['new_attempts'][0]['lesson_url']})
+                                    text=f'''У вас проверили работу [{response_json['new_attempts'][0]['lesson_title']}]({response_json['new_attempts'][0]['lesson_url']})
                                     \nК сожалению, в работе нашлись ошибки''',
                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
-                    timestamp = response['new_attempts'][0]['timestamp']
+                    timestamp = response_json['new_attempts'][0]['timestamp']
                 else:
                     bot.sendMessage(chat_id=chat_id,
-                                    text=f'''У вас проверили работу [{response['new_attempts'][0]['lesson_title']}]({response['new_attempts'][0]['lesson_url']})
+                                    text=f'''У вас проверили работу [{response_json['new_attempts'][0]['lesson_title']}]({response_json['new_attempts'][0]['lesson_url']})
                                     \nПреподавателю всё понравилось, можно приступать к следующему уроку''',
                                     parse_mode=telegram.ParseMode.MARKDOWN_V2)
-                    timestamp = response['new_attempts'][0]['timestamp']
+                    timestamp = response_json['new_attempts'][0]['timestamp']
         except requests.exceptions.ReadTimeout:
             continue
         except requests.exceptions.ConnectionError:
@@ -60,7 +60,7 @@ def main():
     args = parser.parse_args()
     chat_id = args.chat_id
 
-    sending_messages(dvmn_token, tg_token, chat_id)
+    sending_messages_in_telegram(dvmn_token, tg_token, chat_id)
 
 
 if __name__ == '__main__':
