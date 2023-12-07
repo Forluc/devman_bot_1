@@ -20,35 +20,7 @@ def get_response(dvmn_token, timestamp):
     return response.json()
 
 
-def main(dvmn_token, tg_token, chat_id):
-    bot = telegram.Bot(token=tg_token)
-    timestamp = datetime.datetime.now().timestamp()
-    while True:
-        try:
-            response_review = get_response(dvmn_token, timestamp)
-            if response_review['status'] == 'timeout':
-                continue
-            else:
-                if response_review['new_attempts'][0]['is_negative']:
-                    bot.sendMessage(chat_id=chat_id,
-                                    text=f'''У вас проверили работу [{response_review['new_attempts'][0]['lesson_title']}]({response_review['new_attempts'][0]['lesson_url']})
-                                        \nК сожалению, в работе нашлись ошибки''',
-                                    parse_mode=telegram.ParseMode.MARKDOWN_V2)
-                    timestamp = response_review['new_attempts'][0]['timestamp']
-                else:
-                    bot.sendMessage(chat_id=chat_id,
-                                    text=f'''У вас проверили работу [{response_review['new_attempts'][0]['lesson_title']}]({response_review['new_attempts'][0]['lesson_url']})
-                                        \nПреподавателю всё понравилось, можно приступать к следующему уроку''',
-                                    parse_mode=telegram.ParseMode.MARKDOWN_V2)
-                    timestamp = response_review['new_attempts'][0]['timestamp']
-        except requests.exceptions.ReadTimeout:
-            continue
-        except requests.exceptions.ConnectionError:
-            time.sleep(10)
-            continue
-
-
-if __name__ == '__main__':
+def main():
     env = Env()
     env.read_env()
 
@@ -60,4 +32,33 @@ if __name__ == '__main__':
     args = parser.parse_args()
     chat_id = args.chat_id
 
-    main(dvmn_token, tg_token, chat_id)
+    bot = telegram.Bot(token=tg_token)
+    timestamp = datetime.datetime.now().timestamp()
+
+    while True:
+        try:
+            review = get_response(dvmn_token, timestamp)
+            if review['status'] == 'timeout':
+                continue
+            else:
+                if review['new_attempts'][0]['is_negative']:
+                    bot.sendMessage(chat_id=chat_id,
+                                    text=f'''У вас проверили работу [{review['new_attempts'][0]['lesson_title']}]({review['new_attempts'][0]['lesson_url']})
+                                        \nК сожалению, в работе нашлись ошибки''',
+                                    parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                    timestamp = review['new_attempts'][0]['timestamp']
+                else:
+                    bot.sendMessage(chat_id=chat_id,
+                                    text=f'''У вас проверили работу [{review['new_attempts'][0]['lesson_title']}]({review['new_attempts'][0]['lesson_url']})
+                                        \nПреподавателю всё понравилось, можно приступать к следующему уроку''',
+                                    parse_mode=telegram.ParseMode.MARKDOWN_V2)
+                    timestamp = review['new_attempts'][0]['timestamp']
+        except requests.exceptions.ReadTimeout:
+            continue
+        except requests.exceptions.ConnectionError:
+            time.sleep(10)
+            continue
+
+
+if __name__ == '__main__':
+    main()
