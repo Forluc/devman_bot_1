@@ -7,6 +7,8 @@ import requests
 import telegram
 from environs import Env
 
+logger = logging.getLogger(__file__)
+
 
 class TelegramLogsHandler(logging.Handler):
     def __init__(self, tg_bot, chat_id):
@@ -39,8 +41,6 @@ def main():
     dvmn_token = env.str('DVMN_TOKEN')
     tg_token = env.str('TG_API_TOKEN')
     tg_chat_id = env.str('TG_CHAT_ID')
-
-    logger = logging.getLogger('bot')
 
     parser = argparse.ArgumentParser(description='Бот уведомляюший о проверке работ на сайте https://dvmn.org/')
     parser.add_argument('-c', '--chat_id', help='Id пользователя в телеграме', default=tg_chat_id)
