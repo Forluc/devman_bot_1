@@ -72,7 +72,7 @@ $ sudo docker push YOUR-USER-NAME/dvmn-bot
 - Скачайте [Docker](https://www.docker.com/). [Туториал](https://timeweb.cloud/tutorials/docker/kak-ustanovit-docker-na-ubuntu-22-04) на русском.
 - Запустите контейнер:
 ```bash
-$ sudo docker run --dp 0.0.0.0:3000:3000 -e DVMN_TOKEN=... -e TG_API_TOKEN=...  -e TG_CHAT_ID=... YOUR-USER-NAME/dvmn-bot
+$ sudo docker run -dp 0.0.0.0:3000:3000 -e DVMN_TOKEN=... -e TG_API_TOKEN=...  -e TG_CHAT_ID=... YOUR-USER-NAME/dvmn-bot
 ```
 - Посмотреть контейнер и образ можно командой:
 ```bash
