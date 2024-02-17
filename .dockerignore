@@ -1,4 +1,13 @@
+.git/
+*.md
+
 .env
-.idea
+.venv
+env/
 venv/
-.git
+
+__pycache__/
+
+.idea/
+
+.gitignore
