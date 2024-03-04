@@ -50,31 +50,30 @@ $ python main.py --chat_id 000000000
 
 ## Запуск с помощью [Docker](https://www.docker.com/)(локально)
 
-- Зарегистрируйтесь и скачайте [Docker](https://www.docker.com/). [Туториал](https://timeweb.cloud/tutorials/docker/kak-ustanovit-docker-na-ubuntu-22-04) на русском.
-- Соберите образ контейнера командой:
+Зарегистрируйтесь и скачайте [Docker](https://www.docker.com/). [Туториал](https://timeweb.cloud/tutorials/docker/kak-ustanovit-docker-na-ubuntu-22-04) на русском.
+Соберите образ контейнера командой:
 ```bash
 $ sudo docker build -t dvmn-bot .
 ```
-- Запустите контейнер командой:
+Запустите контейнер командой:
 ```bash
 $ sudo docker run --dp 127.0.0.1:3000:3000 -e DVMN_TOKEN=... -e TG_API_TOKEN=...  -e TG_CHAT_ID=... dvmn-bot
 ```
-- Сделайте тег для пуша:
+Сделайте тег для пуша:
 ```bash
 $ sudo docker tag dvmn-bot YOUR-USER-NAME/dvmn-bot
 ```
-- Запуште образ на репозиторий [Docker](https://www.docker.com/):
+Запуште образ на репозиторий [Docker](https://www.docker.com/):
 ```bash
 $ sudo docker push YOUR-USER-NAME/dvmn-bot
 ```
 
-## Запуск с помощью [Docker](https://www.docker.com/)(на сервере)
-- Скачайте [Docker](https://www.docker.com/). [Туториал](https://timeweb.cloud/tutorials/docker/kak-ustanovit-docker-na-ubuntu-22-04) на русском.
-- Запустите контейнер:
+## Запуск с помощью [Docker](https://www.docker.com/)(на сервере)Скачайте [Docker](https://www.docker.com/). [Туториал](https://timeweb.cloud/tutorials/docker/kak-ustanovit-docker-na-ubuntu-22-04) на русском.
+Запустите контейнер:
 ```bash
 $ sudo docker run -dp 0.0.0.0:3000:3000 -e DVMN_TOKEN=... -e TG_API_TOKEN=...  -e TG_CHAT_ID=... YOUR-USER-NAME/dvmn-bot
 ```
-- Посмотреть контейнер и образ можно командой:
+Посмотреть контейнер и образ можно командой:
 ```bash
 $ sudo docker ps && sudo docker images
 ```
